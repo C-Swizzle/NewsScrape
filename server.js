@@ -30,7 +30,7 @@ mongoose.connect(MONGODB_URI, { useNewUrlParser: true });
 
 
 app.get("/",function(req,res){
-  res.send("hello world");
+  res.send("<p>hello world</p>");
 })
 
 
