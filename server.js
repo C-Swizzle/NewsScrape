@@ -21,6 +21,14 @@ app.use(logger("dev"));
 // Parse request body as JSON
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+
+//init HB
+var exphbs = require("express-handlebars");
+
+app.engine("handlebars", exphbs({ defaultLayout: "main" }));
+app.set("view engine", "handlebars");
+
+
 // Make public a static folder
 app.use(express.static("public"));
 
@@ -30,7 +38,7 @@ mongoose.connect(MONGODB_URI, { useNewUrlParser: true });
 
 
 app.get("/",function(req,res){
-  res.send("<p>hello world</p>");
+  res.render("index",{})
 })
 
 
