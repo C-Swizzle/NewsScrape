@@ -5,7 +5,21 @@
     <label for="sub-to-scrape">Subreddit to scrape from</label>
     <input class="form-control" id="sub-to-scrape" placeholder="Enter subreddit to scrape from">
   </div>
-  
+   <div class="form-group">
+    <label for="when-to-scrape">Scrape Posts from when?</label>
+    <select class="form-control" id="when-to-scrape">
+      <option value="hot">Hot (default)</option>
+      <option value="hour">Top Posts of the Hour</option>
+      <option value="today">Top Posts of Today</option>
+      <option value="week">Top Posts of the Week</option>
+      <option value="month">Top Posts of the Month</option>
+      <option value="year">Top Posts of the Year</option>
+      <option value="all-time">Top Posts of All Time</option>
+      <option value="new">New</option>
+      <option value="controversial">Controversial</option>
+      <option value="rising">Rising</option>
+    </select>
+  </div>
   <button type="submit" id="sub-submit" class="btn btn-primary">Submit</button>
 </form>
 

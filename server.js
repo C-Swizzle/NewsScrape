@@ -41,8 +41,8 @@ app.get("/",function(req,res){
   res.render("index",{})
 })
 
-app.get("/scrape/subreddit/:sub",function(req,res){
-  var subToScrapeFrom=req.params.sub;
+app.post("/scrape/subreddit/",function(req,res){
+  var subToScrapeFrom=req.body.urlToScrape;
   console.log(subToScrapeFrom);
   var urlToScrape="https://old.reddit.com/r/"+subToScrapeFrom;
   console.log(urlToScrape);
@@ -50,8 +50,13 @@ app.get("/scrape/subreddit/:sub",function(req,res){
     var $ = cheerio.load(response.data);
     // console.log($);
 
-    $(p.title).each(function(index,element){
-      console.log(element);
+    $("p.title").each(function(index,element){
+      // console.log(element);
+      console.log(index);
+      console.log($(element).text())
+      console.log( $(element).children().attr("href"));
+
+      console.log("---------------------------------------------");
     })
 
 }).catch(function(err){
