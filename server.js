@@ -41,7 +41,23 @@ app.get("/",function(req,res){
   res.render("index",{})
 })
 
+app.get("/scrape/subreddit/:sub",function(req,res){
+  var subToScrapeFrom=req.params.sub;
+  console.log(subToScrapeFrom);
+  var urlToScrape="https://old.reddit.com/r/"+subToScrapeFrom;
+  console.log(urlToScrape);
+  axios.get(urlToScrape).then(function(response) {
+    var $ = cheerio.load(response.data);
+    // console.log($);
 
+    $(p.title).each(function(index,element){
+      console.log(element);
+    })
+
+}).catch(function(err){
+  console.log(err);
+});
+})
 
 app.listen(PORT, function() {
     console.log("App running on port " + PORT + "!");
