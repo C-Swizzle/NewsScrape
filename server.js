@@ -30,6 +30,7 @@ app.set("view engine", "handlebars");
 
 
 // Make public a static folder
+//this serves all JS files in public to the HB files
 app.use(express.static("public"));
 
 // Connect to the Mongo DB
@@ -49,16 +50,41 @@ app.post("/scrape/subreddit/",function(req,res){
   axios.get(urlToScrape).then(function(response) {
     var $ = cheerio.load(response.data);
     // console.log($);
-
-    $("p.title").each(function(index,element){
-      // console.log(element);
+    var resultArr=[];
+    $("div.thing").each(function(index,element){
+      var author = $(element).data("author");
+      var title=$(element).find("a.title").text();
+      var link=$(element).data("permalink");
+      var time=$(element).find("time.live-timestamp").text();
+      var commentCount=$(element).find("a.comments").text();
       console.log(index);
-      console.log($(element).text())
-      console.log( $(element).children().attr("href"));
-
-      console.log("---------------------------------------------");
+      console.log(author);
+      console.log(title);
+      console.log(link);
+      console.log(time);
+      console.log(commentCount);
+      console.log("-----------------------------------")
     })
+    // $("p.title").each(function(index,element){
+    //   // console.log(element);
+    //   console.log(index);
+    //   var title= $(element).text();
+    //   var link = $(element).children().attr("href");
+    //   resultArr.push({
+    //     title:title,
+    //     link:link
+    //   });
+    //   console.log("---------------------------------------------");
+    // })
+    // $("time.live-timestamp").each(function(index,element){
+    //   resultArr[index].time=$(element).text();
+      
+    // });
+    // $("a.author").each(function(index,element){
+    //   console.log($(element).text())
 
+    // })
+    console.log(resultArr);
 }).catch(function(err){
   console.log(err);
 });
