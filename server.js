@@ -34,7 +34,7 @@ app.set("view engine", "handlebars");
 app.use(express.static("public"));
 
 // Connect to the Mongo DB
-var MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/mongoHeadlines";
+var MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/NewsScraper";
 mongoose.connect(MONGODB_URI, { useNewUrlParser: true });
 
 
@@ -50,9 +50,9 @@ app.post("/scrape/subreddit/",function(req,res){
   axios.get(urlToScrape).then(function(response) {
     var $ = cheerio.load(response.data);
     // console.log($);
-    var resultArr=[];
+    // var resultArr=[];
     $("div.thing").each(function(index,element){
-      var author = $(element).data("author");
+      var author = $(element).data("author") || "[deleted]";
       var title=$(element).find("a.title").text();
       var commentLink="https://old.reddit.com"+$(element).data("permalink");
       var time=$(element).find("time.live-timestamp").text();
@@ -72,7 +72,7 @@ app.post("/scrape/subreddit/",function(req,res){
 
       console.log("-----------------------------------");
 
-      resultArr.push({
+      db.Article.create({
         author:author,
         title:title,
         commentLink:commentLink,
