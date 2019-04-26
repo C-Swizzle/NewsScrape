@@ -54,16 +54,35 @@ app.post("/scrape/subreddit/",function(req,res){
     $("div.thing").each(function(index,element){
       var author = $(element).data("author");
       var title=$(element).find("a.title").text();
-      var link=$(element).data("permalink");
+      var commentLink="https://old.reddit.com"+$(element).data("permalink");
       var time=$(element).find("time.live-timestamp").text();
-      var commentCount=$(element).find("a.comments").text();
+      var commentCount=$(element).data("comments-count");
+      var score=$(element).data("score");
+      var outBoundLink=$(element).data("url");
+      var imgSrc=$(element).find("a.thumbnail").find("img").attr("src") || "./public/no-image.jpg";
       console.log(index);
       console.log(author);
       console.log(title);
-      console.log(link);
+      console.log(commentLink);
       console.log(time);
-      console.log(commentCount);
-      console.log("-----------------------------------")
+      console.log(commentCount +"comments");
+      console.log(score +"upvotes");
+      console.log(outBoundLink);
+      console.log(imgSrc);
+
+      console.log("-----------------------------------");
+
+      resultArr.push({
+        author:author,
+        title:title,
+        commentLink:commentLink,
+        time:time,
+        score:score,
+        commentCount:commentCount,
+        outBoundLink:outBoundLink,
+        imgSrc:imgSrc
+      });
+      
     })
     // $("p.title").each(function(index,element){
     //   // console.log(element);
