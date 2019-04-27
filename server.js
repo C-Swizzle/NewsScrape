@@ -52,17 +52,26 @@ app.post("/scrape/subreddit/",function(req,res){
     // console.log($);
     var resultArr=[];
     $("div.thing").each(function(index,element){
-      var author = $(element).data("author");
+      var author = $(element).data("author") || "[deleted]";
       var title=$(element).find("a.title").text();
-      var link=$(element).data("permalink");
+      var commentLink="https://old.reddit.com"+$(element).data("permalink");
       var time=$(element).find("time.live-timestamp").text();
-      var commentCount=$(element).find("a.comments").text();
+      var thumbnail=$(element).find("img").attr("src");
+      var commentCount=$(element).data("comments-count");
+      var score=$(element).data("score");
+      var outBoundLink=$(element).find("a.thumbnail").data("href-url");
+      var nsfwBool=$(element).data("nsfw");
+
       console.log(index);
       console.log(author);
       console.log(title);
-      console.log(link);
+      console.log(commentLink);
       console.log(time);
       console.log(commentCount);
+      console.log(thumbnail);
+      console.log(score);
+      console.log(outBoundLink);
+      console.log(nsfwBool);
       console.log("-----------------------------------")
     })
     // $("p.title").each(function(index,element){
