@@ -34,7 +34,7 @@ app.set("view engine", "handlebars");
 app.use(express.static("public"));
 
 // Connect to the Mongo DB
-var MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/mongoHeadlines";
+var MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/NewsScraper";
 mongoose.connect(MONGODB_URI, { useNewUrlParser: true });
 
 
@@ -50,29 +50,39 @@ app.post("/scrape/subreddit/",function(req,res){
   axios.get(urlToScrape).then(function(response) {
     var $ = cheerio.load(response.data);
     // console.log($);
-    var resultArr=[];
+    // var resultArr=[];
     $("div.thing").each(function(index,element){
       var author = $(element).data("author") || "[deleted]";
       var title=$(element).find("a.title").text();
       var commentLink="https://old.reddit.com"+$(element).data("permalink");
       var time=$(element).find("time.live-timestamp").text();
-      var thumbnail=$(element).find("img").attr("src");
       var commentCount=$(element).data("comments-count");
       var score=$(element).data("score");
-      var outBoundLink=$(element).find("a.thumbnail").data("href-url");
-      var nsfwBool=$(element).data("nsfw");
-
+      var outBoundLink=$(element).data("url");
+      var imgSrc=$(element).find("a.thumbnail").find("img").attr("src") || "./public/no-image.jpg";
       console.log(index);
       console.log(author);
       console.log(title);
       console.log(commentLink);
       console.log(time);
-      console.log(commentCount);
-      console.log(thumbnail);
-      console.log(score);
+      console.log(commentCount +"comments");
+      console.log(score +"upvotes");
       console.log(outBoundLink);
-      console.log(nsfwBool);
-      console.log("-----------------------------------")
+      console.log(imgSrc);
+
+      console.log("-----------------------------------");
+
+      db.Article.create({
+        author:author,
+        title:title,
+        commentLink:commentLink,
+        time:time,
+        score:score,
+        commentCount:commentCount,
+        outBoundLink:outBoundLink,
+        imgSrc:imgSrc
+      });
+      
     })
     // $("p.title").each(function(index,element){
     //   // console.log(element);

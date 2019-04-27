@@ -12,13 +12,28 @@ var ArticleSchema = new Schema({
     required: true
   },
   // `link` is required and of type String
-  link: {
+  commentLink: {
     type: String,
     required: true
   },
-  summary: {
+  author: {
     type: String,
     required: true
+  },
+  time: {
+    type: String
+  },
+  score: {
+    type: Number
+  },
+  commentCount: {
+    type: Number
+  },
+  outBoundLink: {
+    type: String
+  },
+  imgSrc: {
+    type: String
   },
   // `note` is an object that stores a Note id
   // The ref property links the ObjectId to the Note model
