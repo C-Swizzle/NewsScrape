@@ -39,7 +39,12 @@ mongoose.connect(MONGODB_URI, { useNewUrlParser: true });
 
 
 app.get("/",function(req,res){
-  res.render("index",{})
+  db.Article.find().then(function(response){
+    var mine=response;
+    console.log(mine);
+  res.render("index",{mine:mine})
+
+  })
 })
 
 app.post("/scrape/subreddit/",function(req,res){
@@ -49,17 +54,23 @@ app.post("/scrape/subreddit/",function(req,res){
   console.log(urlToScrape);
   axios.get(urlToScrape).then(function(response) {
     var $ = cheerio.load(response.data);
-    // console.log($);
-    // var resultArr=[];
+   
     $("div.thing").each(function(index,element){
       var author = $(element).data("author") || "[deleted]";
       var title=$(element).find("a.title").text();
-      var commentLink="https://old.reddit.com"+$(element).data("permalink");
+      var commentLink=$(element).data("permalink");
       var time=$(element).find("time.live-timestamp").text();
       var commentCount=$(element).data("comments-count");
       var score=$(element).data("score");
       var outBoundLink=$(element).data("url");
-      var imgSrc=$(element).find("a.thumbnail").find("img").attr("src") || "./public/no-image.jpg";
+      var imgSrc=$(element).find("a.thumbnail").find("img").attr("src") || "./gone.jpg";
+
+      if(commentLink===outBoundLink){
+        commentLink="https://old.reddit.com"+commentLink;
+        outBoundLink="https://old.reddit.com"+outBoundLink;
+      } else{
+        commentLink="https://old.reddit.com"+commentLink;
+      }
       console.log(index);
       console.log(author);
       console.log(title);
@@ -84,26 +95,7 @@ app.post("/scrape/subreddit/",function(req,res){
       });
       
     })
-    // $("p.title").each(function(index,element){
-    //   // console.log(element);
-    //   console.log(index);
-    //   var title= $(element).text();
-    //   var link = $(element).children().attr("href");
-    //   resultArr.push({
-    //     title:title,
-    //     link:link
-    //   });
-    //   console.log("---------------------------------------------");
-    // })
-    // $("time.live-timestamp").each(function(index,element){
-    //   resultArr[index].time=$(element).text();
-      
-    // });
-    // $("a.author").each(function(index,element){
-    //   console.log($(element).text())
 
-    // })
-    console.log(resultArr);
 }).catch(function(err){
   console.log(err);
 });
