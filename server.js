@@ -75,6 +75,8 @@ app.post("/scrape/subreddit/",function(req,res){
       } else{
         commentLink="https://old.reddit.com"+commentLink;
       }
+
+      
       // console.log(index);
       // console.log(author);
       // console.log(title);
