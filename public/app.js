@@ -53,6 +53,29 @@ $(document).on("click","#sub-submit",function(e){
 
     $.ajax({method:"POST",url:"/scrape/subreddit/",data:{urlToScrape:url}}).then(function(response){
         console.log(response);
+        setTimeout(function(){
+        window.location.reload()
+    },5000);
+    }).catch(function(err){
+        console.log(err);
+    })
+});
+
+$(document).on("click",".comment-submit",function(e){
+    e.preventDefault();
+    var id=$(this).data("id");
+    console.log(id);
+    var comment = $("#"+id+"\\/").val();
+    console.log(comment);
+    var url="/newnote/"+id;
+    $.ajax({
+        url:url,
+        method:"POST",
+        data:{
+            body:comment
+        }
+    }).then(function(response){
+        window.location.reload()
     }).catch(function(err){
         console.log(err);
     })
