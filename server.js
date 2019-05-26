@@ -42,6 +42,7 @@ app.get("/",function(req,res){
   db.Article.find()
   .populate("note")
   .then(function(response){
+    console.log(response)
     var mine=response;
     mine.id=ObjectId(mine._id);
     console.log(mine);
